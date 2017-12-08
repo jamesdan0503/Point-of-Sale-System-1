@@ -21,10 +21,12 @@ public class JsonWR {
     final String loginPath = "/Users/hunk/Java WorkSpace/login/record.json";
     final String logoutPath = "/Users/hunk/Java WorkSpace/logout/record.json";
     final static String inventoryPath = "/Users/hunk/Java WorkSpace/inventory/info.json";
+    final static String historyPath = "/Users/hunk/Java WorkSpace/history/history.json";
 
     JSONObject jsonObject = new JSONObject();
     JSONObject jsonObject_login = new JSONObject();
     static JSONObject jsonObject_logout = new JSONObject();
+    static JSONObject jsonObject_history = new JSONObject();
     
     
    
@@ -114,5 +116,36 @@ public class JsonWR {
         
     }
     
+     
+     public JSONObject json_obj_history(String name, long appleNum,long bananaNum,long cherryNum,Double total) {
+        
+        try {
+		
+                jsonObject_history.append("name", name);
+                jsonObject_history.append("apple", appleNum);
+		jsonObject_history.append("banana", bananaNum);
+		jsonObject_history.append("cherry",cherryNum);
+                jsonObject_history.append("Total Sale", total);
+     
+                
+	} catch (JSONException e1) {
+		// TODO Auto-generated catch block
+		e1.printStackTrace();
+	}
+        return jsonObject_history;
+    }
+     
+     
+     public void historyWrite(JSONObject obj) {
+        
+        try {
+		FileWriter fileWriter = new FileWriter(historyPath);
+		fileWriter.write(jsonObject_history.toString());
+		fileWriter.flush();
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+        
+    }
     
 }

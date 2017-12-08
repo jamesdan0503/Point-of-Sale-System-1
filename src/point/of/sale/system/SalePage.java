@@ -21,11 +21,12 @@ public class SalePage extends javax.swing.JFrame {
     /**
      * Creates new form SalePage
      */
-    public SalePage() {
+    public SalePage(String name) {
         initComponents();
         setLocationRelativeTo(null);
         setResizable(false);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        this.cashierName = name;
     }
     
     private String cashierName;
@@ -54,6 +55,7 @@ public class SalePage extends javax.swing.JFrame {
         bananaCheck = new javax.swing.JCheckBox();
         cherryCheck = new javax.swing.JCheckBox();
         jButton2 = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         jLabel7.setText("jLabel7");
 
@@ -117,6 +119,13 @@ public class SalePage extends javax.swing.JFrame {
             }
         });
 
+        jButton1.setText("History");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -146,7 +155,9 @@ public class SalePage extends javax.swing.JFrame {
                         .addGap(29, 29, 29)
                         .addComponent(totalText, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(153, 153, 153)
+                        .addGap(25, 25, 25)
+                        .addComponent(jButton1)
+                        .addGap(31, 31, 31)
                         .addComponent(jButton2)
                         .addGap(27, 27, 27)
                         .addComponent(jb1)
@@ -185,7 +196,8 @@ public class SalePage extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jb1)
                     .addComponent(jb2)
-                    .addComponent(jButton2))
+                    .addComponent(jButton2)
+                    .addComponent(jButton1))
                 .addGap(58, 58, 58))
         );
 
@@ -234,6 +246,7 @@ public class SalePage extends javax.swing.JFrame {
         }
 
         this.writeTransaction(appleNum, bananaNum, cherryNum);
+        
         JSONParser parser = new JSONParser();
         try {
 			
@@ -251,6 +264,10 @@ public class SalePage extends javax.swing.JFrame {
         
         JsonWR inventoryChange = new JsonWR();
         inventoryChange.inventoryWrite(inventoryChange.json_obj(appleNum_inv, bananaNum_inv, cherryNum_inv));
+        
+        JsonWR historyChange = new JsonWR();
+        historyChange.historyWrite(historyChange.json_obj_history(cashierName, appleNum, bananaNum, cherryNum, this.totalCalc()));
+        
     }//GEN-LAST:event_jb2ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -259,40 +276,67 @@ public class SalePage extends javax.swing.JFrame {
         il.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(SalePage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(SalePage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(SalePage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(SalePage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        
+        final String historyPath = "/Users/hunk/Java WorkSpace/history/history.json";
+       
+        JSONParser parser = new JSONParser();
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new SalePage().setVisible(true);
-            }
-        });
-    }
+        try {
+
+            Object obj_history = parser.parse(new FileReader(historyPath));
+
+            JSONObject jobj_history = (JSONObject) obj_history;
+
+            Object name = jobj_history.get("name");
+            Object totalSale = jobj_history.get("Total Sale");
+            Object appleHist = jobj_history.get("apple");
+            Object bananaHist = jobj_history.get("banana");
+            Object cherryHist = jobj_history.get("cherry");
+
+            JOptionPane.showMessageDialog(null, name + "\n" + "Total Sale: " + totalSale + "\n" + "apple: " + appleHist+ "\n" +"banana: " + bananaHist+ "\n" +"cherry: " + cherryHist,
+                    "MESSAGE", JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+//    /**
+//     * @param args the command line arguments
+//     */
+//    public static void main(String args[]) {
+//        /* Set the Nimbus look and feel */
+//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+//         */
+//        try {
+//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+//                if ("Nimbus".equals(info.getName())) {
+//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+//                    break;
+//                }
+//            }
+//        } catch (ClassNotFoundException ex) {
+//            java.util.logging.Logger.getLogger(SalePage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (InstantiationException ex) {
+//            java.util.logging.Logger.getLogger(SalePage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (IllegalAccessException ex) {
+//            java.util.logging.Logger.getLogger(SalePage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+//            java.util.logging.Logger.getLogger(SalePage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        }
+//        //</editor-fold>
+//
+//        /* Create and display the form */
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                new SalePage().setVisible(true);
+//            }
+//        });
+//    }
     public void UpdateInventory(){
         
         
@@ -353,6 +397,7 @@ public class SalePage extends javax.swing.JFrame {
     private javax.swing.JTextField bananaText;
     private javax.swing.JCheckBox cherryCheck;
     private javax.swing.JTextField cherryText;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

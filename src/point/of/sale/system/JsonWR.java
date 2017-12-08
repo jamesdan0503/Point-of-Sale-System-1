@@ -17,10 +17,16 @@ import org.json.simple.parser.JSONParser;
 
 
 public class JsonWR {
+    
+    final String loginPath = "/Users/hunk/Java WorkSpace/login/record.json";
+    final String logoutPath = "/Users/hunk/Java WorkSpace/logout/record.json";
+    final static String inventoryPath = "/Users/hunk/Java WorkSpace/inventory/info.json";
 
     JSONObject jsonObject = new JSONObject();
     JSONObject jsonObject_login = new JSONObject();
     static JSONObject jsonObject_logout = new JSONObject();
+    
+    
    
     
     public JSONObject json_obj(long appleNum,long bananaNum,long cherryNum){
@@ -50,7 +56,7 @@ public class JsonWR {
     
     public void inventoryWrite(JSONObject obj){
         try {
-		FileWriter fileWriter = new FileWriter("/Users/hunk/Java WorkSpace/inventory/info.json");
+		FileWriter fileWriter = new FileWriter(inventoryPath);
 		fileWriter.write(jsonObject.toString());
 		fileWriter.flush();
 	} catch (Exception e) {
@@ -87,7 +93,7 @@ public class JsonWR {
     public void loginTimeWrite(JSONObject obj) {
         
         try {
-		FileWriter fileWriter = new FileWriter("/Users/hunk/Java WorkSpace/login/record.json");
+		FileWriter fileWriter = new FileWriter(loginPath);
 		fileWriter.write(jsonObject_login.toString());
 		fileWriter.flush();
 	} catch (Exception e) {
@@ -99,7 +105,7 @@ public class JsonWR {
      public void logoutTimeWrite(JSONObject obj) {
         
         try {
-		FileWriter fileWriter = new FileWriter("/Users/hunk/Java WorkSpace/logout/record.json");
+		FileWriter fileWriter = new FileWriter(logoutPath);
 		fileWriter.write(jsonObject_logout.toString());
 		fileWriter.flush();
 	} catch (Exception e) {
